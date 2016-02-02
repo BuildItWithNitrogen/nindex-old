@@ -3,6 +3,9 @@
 %% Expected API exports
 -export([init_db/0, 
          get_all/0,
+         get_link/1,
+         save_link/1,
+         delete_link/1,
          new/3,
          id/1, id/2,
          topic/1, topic/2,
@@ -37,6 +40,37 @@ put_all(Data) ->
 
 init_db() -> 
     put_all(seed()).
+
+get_link(ID) ->
+    Data = get_all(),
+    case [Rec || Rec <- Data, id(Rec)=:=ID] of
+        [] -> undefined;
+        [Weblink|_] -> Weblink
+    end.
+
+save_link(Weblink) ->
+    Data = get_all(),
+    Data1 = case id(Weblink) of
+        undefined -> insert_link(Weblink, Data);
+        _ -> update_link(Weblink, Data)
+    end,
+    put_all(Data1).
+
+insert_link(Weblink, Data) ->
+    [Weblink|Data].
+
+update_link(NewWeblink, Data) ->
+    lists:map(fun(Weblink) ->
+        case id(Weblink)==id(NewWeblink) of
+            true -> NewWeblink;
+            false -> Weblink
+        end
+    end, Data).
+
+delete_link(ID) ->
+    Data = get_all(),
+    Data1 = [WL || WL <- Data, id(WL)=/=ID],
+    put_all(Data1).
 
 %% API functions
 

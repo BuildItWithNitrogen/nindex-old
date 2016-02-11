@@ -19,3 +19,13 @@ title() -> "My Web Links".
 %% State 3
 %% System displays search results
 %% ********************************************* 
+
+%% *********************************************
+%% State 4
+%% System displays record
+%% User selects view, edit, or delete
+%% If view, display web page
+%% If edit, transition to edit_add.erl state 6
+%% If delete, delete record; transition to 
+%% state 1
+%% ********************************************* 

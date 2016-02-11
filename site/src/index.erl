@@ -13,12 +13,25 @@ title() -> "My Web Links".
 %% or enter search words and initiate a search
 %% ********************************************* 
 
-%% Horizontal rule
+body() ->
+  [
+    #p {text = "Initial State: Add new weblink button;
+                  initiate search"},
+    #button{text="Add new weblink", click=
+            #redirect{url="/add_edit/new"}},
+    #br{}, 
+    #textbox {id=search_words},
+    #button {id=retrieve, text="Search for weblinks", 
+             postback=search },
+    #button {text="Show All", postback=show_all},
+    #hr {}, 
 
 %% *********************************************
 %% State 3
 %% System displays search results
 %% ********************************************* 
+    #panel {id=search_results}
+  ]. 
 
 %% *********************************************
 %% State 4

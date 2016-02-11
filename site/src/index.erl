@@ -13,3 +13,9 @@ title() -> "My Web Links".
 %% or enter search words and initiate a search
 %% ********************************************* 
 
+%% Horizontal rule
+
+%% *********************************************
+%% State 3
+%% System displays search results
+%% ********************************************* 

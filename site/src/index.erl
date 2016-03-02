@@ -33,6 +33,32 @@ body() ->
     #panel {id=search_results}
   ]. 
 
+event(search) ->
+    return_search_results().
+
+return_search_results() -> 
+   %% State three 
+   %% Get search terms from url 
+   SearchString = wf:q(search_words), 
+   Links = ni_search:search(SearchString), 
+   Body = draw_links(Links),
+   wf:update(search_results, Body). 
+
+draw_links(Links) ->
+  #panel {id=show_links, body=[           
+    #p {text="State 3: Return search results"},
+    [draw_link(Link) || Link <- Links]           
+  ]}.
+
+draw_link(Weblink) ->   
+   LinkID = ni_links:id(Weblink),
+   Text = ni_links:descriptor(Weblink),   
+   Url  = ni_links:url(Weblink),   
+   #link {
+      text=Text, 
+      postback={show, LinkID, Text, Url}
+   }.
+
 %% *********************************************
 %% State 4
 %% System displays record

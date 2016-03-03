@@ -36,7 +36,14 @@ body() ->
 event(search) ->
     return_search_results();
 event(show_all) ->
-    show_all().
+    show_all();
+event({delete, LinkID}) ->
+   delete(LinkID).
+
+delete(LinkID) ->
+   ni_links:delete_link(LinkID),
+   wf:wire(#alert {text = "DELETED"}),    
+   wf:redirect("/").  
 
 return_search_results() -> 
    %% State three 
@@ -56,10 +63,21 @@ draw_link(Weblink) ->
    LinkID = ni_links:id(Weblink),
    Text = ni_links:descriptor(Weblink),   
    Url  = ni_links:url(Weblink),   
-   #link {
-      text=Text, 
-      postback={show, LinkID, Text, Url}
-   }.
+   EditUrl = "/add_edit/" ++ wf:to_list(LinkID),
+   Menuid = wf:temp_id(),
+   [
+       #link {
+          text=Text, 
+          click=#toggle{target=Menuid}
+       },
+       #panel{id=Menuid, style="display:none", body=[
+           #link {text="view", url=Url},
+           " | ",
+           #link {text="edit", url=EditUrl},
+           " | ",
+           #link {text="delete", postback={delete, LinkID}}
+       ]}
+   ].
 
 show_all() ->
    Links = ni_links:get_all(),

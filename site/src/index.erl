@@ -37,13 +37,12 @@ event(search) ->
     return_search_results();
 event(show_all) ->
     show_all();
-event({delete, LinkID}) ->
-   delete(LinkID).
+event({delete, LinkID, Linkwrapperid}) ->
+   delete(LinkID, Linkwrapperid).
 
-delete(LinkID) ->
+delete(LinkID, Linkwrapperid) ->
    ni_links:delete_link(LinkID),
-   wf:wire(#alert {text = "DELETED"}),    
-   wf:redirect("/").  
+   wf:remove(Linkwrapperid).
 
 return_search_results() -> 
    %% State three 
@@ -65,7 +64,8 @@ draw_link(Weblink) ->
    Url  = ni_links:url(Weblink),   
    EditUrl = "/add_edit/" ++ wf:to_list(LinkID),
    Menuid = wf:temp_id(),
-   [
+   Linkwrapperid = wf:temp_id(),
+   #panel{id=Linkwrapperid, body=[
        #link {
           text=Text, 
           click=#toggle{target=Menuid}
@@ -75,21 +75,11 @@ draw_link(Weblink) ->
            " | ",
            #link {text="edit", url=EditUrl},
            " | ",
-           #link {text="delete", postback={delete, LinkID}}
+           #link {text="delete", postback={delete, LinkID, Linkwrapperid}}
        ]}
-   ].
+   ]}.
 
 show_all() ->
    Links = ni_links:get_all(),
    AllBody = draw_links(Links),
    wf:update(search_results, AllBody).
-
-%% *********************************************
-%% State 4
-%% System displays record
-%% User selects view, edit, or delete
-%% If view, display web page
-%% If edit, transition to edit_add.erl state 6
-%% If delete, delete record; transition to 
-%% state 1
-%% ********************************************* 

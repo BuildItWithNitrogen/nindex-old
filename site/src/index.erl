@@ -34,7 +34,9 @@ body() ->
   ]. 
 
 event(search) ->
-    return_search_results().
+    return_search_results();
+event(show_all) ->
+    show_all().
 
 return_search_results() -> 
    %% State three 
@@ -58,6 +60,11 @@ draw_link(Weblink) ->
       text=Text, 
       postback={show, LinkID, Text, Url}
    }.
+
+show_all() ->
+   Links = ni_links:get_all(),
+   AllBody = draw_links(Links),
+   wf:update(search_results, AllBody).
 
 %% *********************************************
 %% State 4

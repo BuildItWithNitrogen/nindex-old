@@ -5,10 +5,10 @@
           save_link/1,
           delete_link/1,
           new/3,
-          id/1,
-          topic/1,
-          descriptor/1,
-          url/1
+          id/1, id/2,
+          topic/1, topic/2,
+          descriptor/1, descriptor/2,
+          url/1, url/2
         ]).
 
 -define(DB, ni_joedb).
@@ -42,3 +42,15 @@ descriptor(Weblink) ->
 
 url(Weblink) ->
    ?DB:url(Weblink).
+
+id(Weblink, ID) ->
+    ?DB:id(Weblink, ID).
+
+topic(Weblink, Topic) ->
+    ?DB:topic(Weblink, Topic).
+
+descriptor(Weblink, Desc) ->
+    ?DB:descriptor(Weblink, Desc).
+
+url(Weblink, Url) ->
+    ?DB:url(Weblink, Url).

@@ -47,7 +47,7 @@ return_search_results() ->
 draw_links(Links) ->
   #panel {id=show_links, body=[           
     #p {text="State 3: Return search results"},
-    [draw_link(Link) || Link <- Links]           
+    wf:join([draw_link(Link) || Link <- Links], #br{})
   ]}.
 
 draw_link(Weblink) ->   

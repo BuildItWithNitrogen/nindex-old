@@ -12,9 +12,14 @@ get_linkid() ->
         ID -> wf:to_integer(ID)
     end. 
 
+get_link(new) ->
+    new;
+get_link(LinkID) ->
+    ni_links:get_link(LinkID).
+
 body() -> 
     LinkID = get_linkid(),
-    Weblink = ni_links:get_link(LinkID),
+    Weblink = get_link(LinkID),
     form(Weblink).
 
 form(new) -> 

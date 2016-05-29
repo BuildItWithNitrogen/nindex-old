@@ -91,9 +91,7 @@ create_id() ->
     crypto:rand_uniform(1, 999999999999). 
 
 delete_link(ID) ->
-    open_db(),
-    dets:delete(dets_nindex, ID),
-    close_db().
+    gen_server:call(?SERVER, {delete_link, ID}).
 
 %% API functions
 

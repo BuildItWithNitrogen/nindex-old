@@ -66,7 +66,7 @@ handle_call({delete_link, ID}, _From, State) ->
     {reply, ok, State}.
 
 init_db() -> 
-    start().
+    ni_dets_sup:start().
 
 open_db() ->
     DB = dets_nindex,
